@@ -1,0 +1,9 @@
+﻿*.kubeconfig
+kubeconfig*
+.env
+*.key
+*.pem
+*.crt
+*.p12
+__pycache__/
+*.log

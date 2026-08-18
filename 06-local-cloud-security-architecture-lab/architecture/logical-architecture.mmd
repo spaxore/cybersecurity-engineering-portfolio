@@ -1,0 +1,61 @@
+﻿flowchart TB
+    host[Windows Host\nDocker Desktop + WSL2]
+    host --> cluster[kind: cloudsec-lab\nLocal Kubernetes Cluster]
+
+    subgraph control[Control and Governance]
+        api[Kubernetes API Server]
+        rbac[RBAC\nRead-only observer role]
+        opa[OPA Policy Checks]
+    end
+
+    subgraph zones[Namespace Boundaries]
+        security[security-lab]
+        workload[workload-dev]
+        monitoring[monitoring]
+    end
+
+    subgraph app[Workloads]
+        insecure[demo-api-insecure\nBefore baseline]
+        secure[demo-api-secure\nHardened workload]
+        service[ClusterIP Service]
+    end
+
+    subgraph network[Network Controls]
+        deny[Default deny\nIngress + Egress]
+        dns[DNS egress exception]
+        internal[Internal ingress exception]
+    end
+
+    trivy[Trivy\nVulnerabilities + Misconfig + Secrets]
+    evidence[Before / After JSON Evidence]
+
+    cluster --> api
+    api --> rbac
+    api --> zones
+    security --> rbac
+    workload --> insecure
+    workload --> secure
+    secure --> service
+    workload --> network
+    deny --> workload
+    dns --> network
+    internal --> network
+    insecure -. before .-> trivy
+    secure -. after .-> trivy
+    opa --> insecure
+    opa --> secure
+    trivy --> evidence
+
+    classDef host fill:#202938,stroke:#8B7CFF,color:#E6EDF3
+    classDef control fill:#172C32,stroke:#2DD4BF,color:#E6EDF3
+    classDef zone fill:#27242F,stroke:#F2CC60,color:#E6EDF3
+    classDef secure fill:#172C32,stroke:#2DD4BF,color:#E6EDF3
+    classDef insecure fill:#322126,stroke:#F07178,color:#E6EDF3
+    classDef evidence fill:#262233,stroke:#8B7CFF,color:#E6EDF3
+
+    class host,cluster host
+    class api,rbac,opa,trivy control
+    class security,workload,monitoring zone
+    class secure,service,deny,dns,internal secure
+    class insecure insecure
+    class evidence evidence

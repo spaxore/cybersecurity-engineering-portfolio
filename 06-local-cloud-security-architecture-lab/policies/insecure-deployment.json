@@ -1,0 +1,20 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": { "name": "demo-api-insecure" },
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "name": "nginx",
+            "securityContext": {
+              "allowPrivilegeEscalation": true,
+              "runAsUser": 0
+            }
+          }
+        ]
+      }
+    }
+  }
+}

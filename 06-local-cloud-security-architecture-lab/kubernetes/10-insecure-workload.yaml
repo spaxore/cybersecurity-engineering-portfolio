@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api-insecure
+  namespace: workload-dev
+  labels:
+    app: demo-api-insecure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-api-insecure
+  template:
+    metadata:
+      labels:
+        app: demo-api-insecure
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          securityContext:
+            allowPrivilegeEscalation: true
+            runAsUser: 0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-api-insecure
+  namespace: workload-dev
+spec:
+  selector:
+    app: demo-api-insecure
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  type: ClusterIP
