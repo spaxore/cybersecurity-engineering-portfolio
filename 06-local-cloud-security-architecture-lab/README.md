@@ -1,4 +1,4 @@
-﻿# Local Cloud Security Architecture Lab
+# Local Cloud Security Architecture Lab
 
 A free, local Kubernetes security lab that demonstrates cloud-security-architecture principles without requiring an AWS or Azure account.
 
@@ -35,16 +35,13 @@ This project simulates a small secure cloud platform on a local computer using D
 
 ## Project structure
 
-```text
-06-local-cloud-security-architecture-lab/
-â”œâ”€â”€ README.md
-â”œâ”€â”€ architecture/
-â”œâ”€â”€ kubernetes/
-â”œâ”€â”€ policies/
-â”œâ”€â”€ reports/
-â””â”€â”€ scripts/
-```
-
+    06-local-cloud-security-architecture-lab/
+    |-- README.md
+    |-- architecture/
+    |-- kubernetes/
+    |-- policies/
+    |-- reports/
+    `-- scripts/
 ## Prerequisites
 
 Verify that Docker Desktop is running its Linux engine:
