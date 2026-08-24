@@ -1,0 +1,43 @@
+flowchart LR
+    U[User browser]
+    K[Keycloak cloudsec realm\nlocalhost:8080]
+    A[Protected Flask application\nlocalhost:8000]
+    J[OIDC discovery and JWKS]
+    T[Validated access token\nissuer + signature + azp]
+    O[Observer workspace\nsecurity-observer]
+    D[Developer workspace\ndeveloper]
+    S[Admin workspace\nsecurity-admin]
+
+    U -->|1. Login request| A
+    A -->|2. Authorization Code + PKCE| K
+    K -->|3. Authorization response| U
+    U -->|4. Callback with code| A
+    A -->|5. Token exchange| K
+    K -->|6. Access token and ID token| A
+    A -->|7. Read metadata and signing keys| J
+    J --> K
+    A -->|8. Validate claims| T
+    T -->|Allow if role exists| O
+    T -->|Allow if role exists| D
+    T -->|Allow if role exists| S
+
+    subgraph Identity_Boundary[Identity provider boundary]
+        K
+        J
+    end
+
+    subgraph Application_Boundary[Application authorization boundary]
+        A
+        T
+        O
+        D
+        S
+    end
+
+    classDef identity fill:#19324d,stroke:#53b7ff,color:#ffffff;
+    classDef app fill:#243321,stroke:#6fdb9a,color:#ffffff;
+    classDef user fill:#35233d,stroke:#d79cff,color:#ffffff;
+
+    class K,J identity;
+    class A,T,O,D,S app;
+    class U user;

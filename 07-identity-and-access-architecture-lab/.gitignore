@@ -1,0 +1,11 @@
+﻿.env
+**/.env
+.venv/
+**/.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.log
+keycloak/cloudsec-realm.json
+reports/*
+!reports/README.md

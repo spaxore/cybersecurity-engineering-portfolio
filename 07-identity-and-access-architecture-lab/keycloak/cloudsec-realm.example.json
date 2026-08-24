@@ -1,0 +1,80 @@
+{
+  "realm": "cloudsec",
+  "enabled": true,
+  "displayName": "CloudSec Identity Lab",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "security-admin",
+        "description": "Can administer the local identity lab"
+      },
+      {
+        "name": "security-observer",
+        "description": "Read-only security and audit access"
+      },
+      {
+        "name": "developer",
+        "description": "Application development access"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "security-console",
+      "name": "Security Console Demo",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:8000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8000"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "observer",
+      "enabled": true,
+      "email": "observer@cloudsec.local",
+      "firstName": "Security",
+      "lastName": "Observer",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "CHANGE_ME_OBSERVER_PASSWORD",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "security-observer"
+      ]
+    },
+    {
+      "username": "developer",
+      "enabled": true,
+      "email": "developer@cloudsec.local",
+      "firstName": "Application",
+      "lastName": "Developer",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "CHANGE_ME_DEVELOPER_PASSWORD",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "developer"
+      ]
+    }
+  ]
+}
