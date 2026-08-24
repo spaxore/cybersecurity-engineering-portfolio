@@ -106,3 +106,16 @@ Do not expose this development service to the internet. Do not commit `.env` fil
 - https://www.keycloak.org/server/containers
 - https://www.keycloak.org/server/importExport
 - https://www.keycloak.org/securing-apps/oidc-layers
+
+## Sanitized evidence
+
+The local validation evidence demonstrates successful OIDC discovery, role-based authorization, and explicit denial of unauthorized access.
+
+| Evidence | Demonstrated control |
+|---|---|
+| [OIDC discovery](reports/evidence/01-oidc-discovery.png ) | The `cloudsec` realm publishes OIDC metadata and endpoints. |
+| [Observer allowed](reports/evidence/02-observer-allowed.png) | The `security-observer` role reaches its intended workspace. |
+| [Observer denied](reports/evidence/03-observer-denied.png) | The observer identity is denied access to the developer route. |
+| [Developer allowed](reports/evidence/04-developer-allowed.png) | The `developer` role reaches its intended workspace. |
+
+The screenshots were reviewed to exclude passwords, access tokens, cookies, private keys, personal data, and Keycloak administration details.
