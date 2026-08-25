@@ -4,7 +4,6 @@ Project 09 in the cybersecurity engineering portfolio.
 Objective
 This project provides a local snapshot auditor for a Kubernetes security architecture. It collects selected platform resources, normalizes them into a portable snapshot, evaluates explicit governance controls, compares the current state with an approved baseline, and reports configuration drift.
 
-The project focuses on cloud-security governance and configuration assurance. It is intentionally not a SOC project: it does not implement alert triage, incident queues, or incident-response workflows.
 
 Architecture
 Local Kubernetes platform
@@ -116,7 +115,7 @@ A compliant state passes with zero compliance findings and zero drift findings. 
 Evidence and safety
 Public evidence should contain control IDs, resource counts, and pass/fail decisions, but no kubeconfig contents, service-account tokens, credentials, private keys, personal information, or unnecessary host inventory.
 
-The evidence demonstrates configuration governance, not SOC alerting or incident response.
+The evidence demonstrates configuration governance.
 
 Limitations
 This lab audits selected normalized resources rather than every Kubernetes object. It uses a local kind cluster and a manually approved baseline. A production governance platform would require broader resource coverage, authenticated access, scheduled execution, signed evidence, centralized retention, exception workflows, ownership integration, and stronger change control.
