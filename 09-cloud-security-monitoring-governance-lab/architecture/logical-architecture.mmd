@@ -1,0 +1,42 @@
+flowchart LR
+    K[Kubernetes API\nkind-cloudsec-lab]
+    C[PowerShell collector\ncollect-kubernetes-state.ps1]
+    S[Normalized current snapshot\ncurrent-snapshot.json]
+    B[Approved security baseline\napproved-baseline.json]
+    R[Governance rules\ngovernance-rules.json]
+    A[Python governance auditor\naudit.py]
+    J[JSON audit report]
+    M[Markdown governance report]
+    D[Architecture review\ncompliance and drift decision]
+
+    K -->|Namespaces, workloads, policies, RBAC| C
+    C --> S
+    S --> A
+    B --> A
+    R --> A
+    A --> J
+    A --> M
+    J --> D
+    M --> D
+
+    subgraph Platform_Boundary[Local platform boundary]
+        K
+    end
+
+    subgraph Assurance_Boundary[Security assurance boundary]
+        C
+        S
+        B
+        R
+        A
+        J
+        M
+    end
+
+    classDef platform fill:#19324d,stroke:#53b7ff,color:#ffffff;
+    classDef assurance fill:#243321,stroke:#6fdb9a,color:#ffffff;
+    classDef decision fill:#35233d,stroke:#d79cff,color:#ffffff;
+
+    class K platform;
+    class C,S,B,R,A,J,M assurance;
+    class D decision;

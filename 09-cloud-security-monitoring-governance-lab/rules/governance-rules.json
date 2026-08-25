@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "controls": [
+    {
+      "id": "NS-001",
+      "name": "Restricted namespace enforcement",
+      "severity": "high",
+      "description": "Workload namespaces must declare restricted Pod Security enforcement."
+    },
+    {
+      "id": "NS-002",
+      "name": "Required ownership labels",
+      "severity": "medium",
+      "description": "Namespaces must identify their security owner and environment."
+    },
+    {
+      "id": "WL-001",
+      "name": "Non-root workload execution",
+      "severity": "high",
+      "description": "Workload containers must run as a non-root user."
+    },
+    {
+      "id": "WL-002",
+      "name": "Privilege escalation disabled",
+      "severity": "high",
+      "description": "Workload containers must disable privilege escalation."
+    },
+    {
+      "id": "WL-003",
+      "name": "Linux capabilities reduced",
+      "severity": "high",
+      "description": "Workload containers must drop all Linux capabilities."
+    },
+    {
+      "id": "WL-004",
+      "name": "Resource limits defined",
+      "severity": "medium",
+      "description": "Workloads must define CPU and memory limits."
+    },
+    {
+      "id": "NP-001",
+      "name": "Default-deny network policy",
+      "severity": "high",
+      "description": "Every workload namespace must have a default-deny ingress and egress policy."
+    },
+    {
+      "id": "RB-001",
+      "name": "Least-privilege RBAC",
+      "severity": "high",
+      "description": "Read-only identities must not receive write or secret access."
+    }
+  ]
+}

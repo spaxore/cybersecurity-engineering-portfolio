@@ -1,0 +1,15 @@
+reports/*
+!reports/.gitkeep
+
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+
+*.log
+*.kubeconfig
+*.pem
+*.key
+*.p12

@@ -1,0 +1,48 @@
+{
+  "snapshot_version": "1.0",
+  "platform": "kind-cloudsec-lab",
+  "environment": "local-training",
+  "namespaces": [
+    {
+      "name": "workload-dev",
+      "labels": {
+        "environment": "development"
+      },
+      "network_policies": []
+    }
+  ],
+  "workloads": [
+    {
+      "namespace": "workload-dev",
+      "kind": "Deployment",
+      "name": "demo-api-insecure",
+      "replicas": 1,
+      "security": {
+        "run_as_non_root": false,
+        "allow_privilege_escalation": true,
+        "capabilities_drop_all": false,
+        "read_only_root_filesystem": false,
+        "seccomp_profile": "Unconfined"
+      },
+      "resources": {
+        "requests_defined": false,
+        "limits_defined": false
+      }
+    }
+  ],
+  "rbac": [
+    {
+      "namespace": "security-lab",
+      "identity": "security-observer",
+      "verbs": [
+        "get",
+        "list",
+        "create",
+        "update",
+        "delete"
+      ],
+      "can_read_secrets": true,
+      "can_write_workloads": true
+    }
+  ]
+}

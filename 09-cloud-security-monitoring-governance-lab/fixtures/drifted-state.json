@@ -1,0 +1,72 @@
+{
+  "snapshot_version": "1.0",
+  "platform": "kind-cloudsec-lab",
+  "environment": "local-training",
+  "namespaces": [
+    {
+      "name": "security-lab",
+      "labels": {
+        "pod-security.kubernetes.io/enforce": "restricted",
+        "security-owner": "platform-security",
+        "environment": "local-training"
+      },
+      "network_policies": [
+        "default-deny-ingress-egress"
+      ]
+    },
+    {
+      "name": "workload-dev",
+      "labels": {
+        "pod-security.kubernetes.io/enforce": "restricted",
+        "security-owner": "changed-owner",
+        "environment": "development"
+      },
+      "network_policies": [
+        "default-deny-ingress-egress",
+        "allow-dns-egress",
+        "allow-internal-api-ingress"
+      ]
+    },
+    {
+      "name": "unexpected-team-space",
+      "labels": {
+        "pod-security.kubernetes.io/enforce": "privileged",
+        "security-owner": "unknown",
+        "environment": "development"
+      },
+      "network_policies": []
+    }
+  ],
+  "workloads": [
+    {
+      "namespace": "workload-dev",
+      "kind": "Deployment",
+      "name": "demo-api-secure",
+      "replicas": 2,
+      "security": {
+        "run_as_non_root": true,
+        "allow_privilege_escalation": false,
+        "capabilities_drop_all": true,
+        "read_only_root_filesystem": true,
+        "seccomp_profile": "RuntimeDefault"
+      },
+      "resources": {
+        "requests_defined": true,
+        "limits_defined": true
+      }
+    }
+  ],
+  "rbac": [
+    {
+      "namespace": "security-lab",
+      "identity": "security-observer",
+      "verbs": [
+        "get",
+        "list",
+        "watch"
+      ],
+      "can_read_secrets": false,
+      "can_write_workloads": false
+    }
+  ]
+}
