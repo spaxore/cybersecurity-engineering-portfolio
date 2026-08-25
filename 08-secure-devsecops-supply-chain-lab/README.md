@@ -6,7 +6,7 @@ Project 08 in the cybersecurity engineering portfolio.
 
 This project demonstrates a local-first software supply-chain security pipeline for a small Flask application and its container image. The same security controls are mirrored in GitHub Actions for push and pull-request validation.
 
-The project focuses on prevention and engineering controls rather than SOC operations. It checks source code, dependencies, container configuration, secrets, software inventories, and policy compliance before a workload is considered ready for delivery.
+The project focuses on prevention and engineering controls. It checks source code, dependencies, container configuration, secrets, software inventories, and policy compliance before a workload is considered ready for delivery.
 
 ## Security controls
 
