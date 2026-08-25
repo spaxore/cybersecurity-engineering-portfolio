@@ -1,0 +1,24 @@
+rules:
+  - id: flask-debug-must-be-disabled
+    message: Flask debug mode must be disabled in committed application code.
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern: app.run(..., debug=True, ...)
+
+  - id: dangerous-subprocess-shell
+    message: Avoid shell=True in subprocess calls unless explicitly reviewed.
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern: subprocess.$FUNC(..., shell=True, ...)
+
+  - id: hardcoded-credential-assignment
+    message: Possible hardcoded credential assignment detected.
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern-regex: (?i)(password|passwd|secret|api[_-]?key|token)\s*=\s*[\"'][^\"']+[\"']

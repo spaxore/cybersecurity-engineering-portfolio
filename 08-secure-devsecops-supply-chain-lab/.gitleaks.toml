@@ -1,0 +1,11 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated reports, evidence, and local test output are not source inputs"
+paths = [
+  '''(?i)(^|[/\\])reports([/\\]|$)''',
+  '''(?i)(^|[/\\])evidence([/\\]|$)''',
+  '''(?i)(^|[/\\])\.git([/\\]|$)''',
+  '''(?i)(^|[/\\])__pycache__([/\\]|$)'''
+]

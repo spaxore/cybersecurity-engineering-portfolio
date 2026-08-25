@@ -1,0 +1,95 @@
+name: Secure supply-chain pipeline
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PROJECT_DIR: 08-secure-devsecops-supply-chain-lab
+  IMAGE_NAME: project08-demo:ci
+
+jobs:
+  security:
+    name: Source, dependency, image, and policy checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Scan repository for secrets
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            zricethezav/gitleaks:latest \
+            dir "/repo/${PROJECT_DIR}" \
+            --config="/repo/${PROJECT_DIR}/.gitleaks.toml" \
+            --no-banner
+
+      - name: Run Semgrep rules
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            semgrep/semgrep:latest \
+            semgrep \
+            --config="/repo/${PROJECT_DIR}/.semgrep/rules.yml" \
+            "/repo/${PROJECT_DIR}/app/src"
+
+      - name: Build demo container
+        run: docker build --tag "${IMAGE_NAME}" "${PROJECT_DIR}/app"
+
+      - name: Scan demo container
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            --exit-code 1 \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            "${IMAGE_NAME}"
+
+      - name: Generate CycloneDX SBOM
+        run: |
+          mkdir -p "${PROJECT_DIR}/reports"
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            anchore/syft:latest \
+            "dir:/repo/${PROJECT_DIR}/app" \
+            "-o" "cyclonedx-json=/repo/${PROJECT_DIR}/reports/sbom.cdx.json"
+
+      - name: Evaluate OPA supply-chain policy
+        shell: bash
+        run: |
+          result=$(docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            openpolicyagent/opa:latest eval \
+            --format raw \
+            --data "/repo/${PROJECT_DIR}/policies/supply-chain.rego" \
+            --input "/repo/${PROJECT_DIR}/policies/policy-input.json" \
+            "count(data.supplychain.deny) > 0")
+
+          echo "Policy violations present: ${result}"
+
+          if [ "${result}" = "true" ]; then
+            echo "OPA policy gate failed because violations were detected."
+            exit 1
+          fi
+
+          if [ "${result}" != "false" ]; then
+            echo "OPA returned an unexpected result: ${result}"
+            exit 1
+          fi
+
+          echo "OPA policy gate passed with zero violations."
+
+      - name: Upload sanitized SBOM artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project08-sbom
+          path: 08-secure-devsecops-supply-chain-lab/reports/sbom.cdx.json
+          if-no-files-found: ignore

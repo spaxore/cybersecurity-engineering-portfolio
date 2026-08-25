@@ -1,0 +1,6 @@
+{
+  "kind": "container",
+  "run_as_non_root": false,
+  "healthcheck_defined": false,
+  "base_image_pinned": false
+}
