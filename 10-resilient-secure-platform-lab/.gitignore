@@ -1,0 +1,27 @@
+# Generated recovery state
+workspace/*
+!workspace/.gitkeep
+
+# Generated backup archives, manifests, and tampered copies
+artifacts/*
+!artifacts/backups/
+artifacts/backups/*
+!artifacts/backups/.gitkeep
+
+# Generated reports
+reports/*
+!reports/.gitkeep
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local environments and secrets
+.venv/
+venv/
+.env
+.env.*
+*.kubeconfig
+kubeconfig*
+*.pem
+*.key
