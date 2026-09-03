@@ -1,0 +1,21 @@
+# Generated inventory state
+workspace/*
+!workspace/.gitkeep
+
+# Generated reports
+reports/*
+!reports/.gitkeep
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local environments and secrets
+.venv/
+venv/
+.env
+.env.*
+*.kubeconfig
+kubeconfig*
+*.pem
+*.key
