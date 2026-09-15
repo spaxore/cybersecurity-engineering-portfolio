@@ -14,6 +14,8 @@ No production credentials, personal data, private keys, real cloud inventories, 
 
 ## Completed portfolio projects
 
+Projects 01–04 are the current architecture foundation and are presented separately in the roadmap below while they are being developed.
+
 | Project | Focus | Main technologies |
 | --- | --- | --- |
 | [05 — Image Metadata and Privacy Toolkit](https://github.com/spaxore/cybersecurity-engineering-portfolio/tree/main/05-image-metadata-extractor) | Inspecting EXIF and GPS metadata, identifying privacy exposure, rendering location findings, and creating cleaned image copies. | Python, Pillow, EXIF, GPS privacy, Folium |

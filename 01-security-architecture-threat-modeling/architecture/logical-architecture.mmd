@@ -1,0 +1,63 @@
+flowchart LR
+    Developer[Developer] -->|Reviewed change| Repo[Source Repository]
+
+    Repo --> Pipeline[CI/CD Security Pipeline]
+    Pipeline -->|Secret and source checks| SourceGate[Source Security Gate]
+    Pipeline -->|Image and SBOM checks| SupplyGate[Supply-Chain Gate]
+    Pipeline -->|Policy evaluation| PolicyGate[Policy Gate]
+
+    PolicyGate -->|Approved change| Cluster[Local Kubernetes Cluster]
+    PolicyGate -->|Rejected change| Feedback[Actionable Security Feedback]
+
+    User[Authenticated User] -->|OIDC flow| IdP[Keycloak OIDC Provider]
+    IdP -->|Validated tokens| Cluster
+
+    Cluster --> Workloads[Hardened Workloads]
+    Workloads -->|Restricted traffic| Data[Controlled Data Services]
+    Workloads -->|Audit events| Monitoring[Monitoring and Governance]
+
+    Monitoring --> Collector[Platform State Collector]
+    Collector --> Baseline[Approved Security Baseline]
+    Baseline --> Drift[Compliance and Drift Decision]
+
+    Backup[Backup Artifact] --> Integrity[SHA-256 Integrity Validation]
+    Integrity -->|Verified input| Restore[Isolated Restoration Workspace]
+    Integrity -->|Tampered input| Reject[Recovery Rejection]
+
+    Cluster --> Backup
+    Restore --> Recovery[Recovery Validation Evidence]
+
+    subgraph B1[Trust Boundary: Developer and Repository]
+        Developer
+        Repo
+    end
+
+    subgraph B2[Trust Boundary: Delivery Pipeline]
+        Pipeline
+        SourceGate
+        SupplyGate
+        PolicyGate
+    end
+
+    subgraph B3[Trust Boundary: Runtime Platform]
+        Cluster
+        Workloads
+        Data
+    end
+
+    subgraph B4[Trust Boundary: Identity]
+        User
+        IdP
+    end
+
+    subgraph B5[Trust Boundary: Governance and Recovery]
+        Monitoring
+        Collector
+        Baseline
+        Drift
+        Backup
+        Integrity
+        Restore
+        Reject
+        Recovery
+    end
