@@ -1,0 +1,11 @@
+Risk ID,Threat ID,Asset,Description,Likelihood,Impact,Inherent Risk,Existing Controls,Residual Risk,Owner,Status
+R-001,T-002,A-004,Invalid or incorrectly scoped identity token accepted by a protected service,Medium,High,High,OIDC signature issuer audience expiration and role validation,Medium,Identity owner,Open
+R-002,T-004,A-008,Insecure workload bypasses policy and reaches the cluster,Medium,High,High,Protected branches CI checks OPA or policy validation RBAC,Medium,Platform owner,Open
+R-003,T-009,A-009,Deployment identity receives excessive cluster permissions,Medium,High,High,Least-privilege RBAC review and deployment audit,Medium,Platform owner,Open
+R-004,T-010,A-008,Workload gains privileges beyond its intended runtime boundary,Low,High,High,Non-root execution dropped capabilities seccomp and NetworkPolicies,Medium,Platform owner,Open
+R-005,T-006,A-006,CI output exposes a credential or sensitive build value,Medium,High,High,Gitleaks secret isolation and sanitized reports,Medium,Supply-chain owner,Open
+R-006,T-011,A-012,Tampered backup is accepted for restoration,Low,High,High,SHA-256 verification reject-on-mismatch and isolated restore,Low,Recovery owner,Open
+R-007,T-008,A-008,Excessive traffic exhausts local workload resources,Medium,Medium,Medium,Network boundaries resource controls and monitoring,Medium,Platform owner,Accepted
+R-008,T-005,A-014,Administrative action cannot be attributed to a responsible identity,Low,High,Medium,Git history audit events and pipeline records,Low,Security owner,Open
+R-009,T-012,A-014,Private information is published as portfolio evidence,Medium,Medium,Medium,Sanitization checklist secret scanning and review,Low,Repository owner,Open
+R-010,T-003,A-005,Unauthorized source or policy change is merged,Medium,High,High,Protected branches pull-request review and CI validation,Medium,Repository owner,Open
