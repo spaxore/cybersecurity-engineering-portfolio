@@ -1,0 +1,37 @@
+flowchart LR
+    Internet["Z-001 Untrusted / Internet"]
+    FW["Edge Firewall  
+Default deny"]
+    DMZ["Z-002 DMZ  
+Reverse Proxy / Web Gateway"]
+    APP["Z-003 Application  
+Internal Services"]
+    DATA["Z-004 Data  
+Database / Sensitive Services"]
+    MGMT["Z-005 Management  
+Admin / Monitoring / Backup"]
+
+    Internet -->|"HTTPS 443  
+Approved public service"| FW
+    FW -->|"HTTPS 443  
+Allow listed destination"| DMZ
+    DMZ -->|"HTTPS 8443  
+Approved application endpoint"| APP
+    APP -->|"TCP 5432  
+Approved database"| DATA
+
+    MGMT -->|"SSH 22 / HTTPS 443  
+Administrative access"| DMZ
+    MGMT -->|"HTTPS 443  
+Administrative access"| APP
+    MGMT -->|"TCP 5432 / HTTPS 443  
+Approved management"| DATA
+
+    DMZ -.->|"Logs / health checks"| MGMT
+    APP -.->|"Logs / metrics"| MGMT
+    DATA -.->|"Backup export"| MGMT
+
+    Internet -.->|"Denied: direct application access"| APP
+    Internet -.->|"Denied: direct data access"| DATA
+    DMZ -.->|"Denied: direct data access"| DATA
+    DATA -.->|"Denied: Internet egress"| Internet

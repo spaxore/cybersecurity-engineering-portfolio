@@ -1,0 +1,104 @@
+{
+  "test_cases": [
+    {
+      "id": "TC-001",
+      "description": "Public HTTPS reaches the DMZ gateway",
+      "source_zone": "Z-001",
+      "destination_zone": "Z-002",
+      "protocol": "tcp",
+      "destination_port": 443,
+      "expected_action": "allow",
+      "expected_rule": "FW-001"
+    },
+    {
+      "id": "TC-002",
+      "description": "Direct Internet access to the application zone is blocked",
+      "source_zone": "Z-001",
+      "destination_zone": "Z-003",
+      "protocol": "tcp",
+      "destination_port": 8443,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    },
+    {
+      "id": "TC-003",
+      "description": "Direct Internet access to the data zone is blocked",
+      "source_zone": "Z-001",
+      "destination_zone": "Z-004",
+      "protocol": "tcp",
+      "destination_port": 5432,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    },
+    {
+      "id": "TC-004",
+      "description": "DMZ gateway reaches the approved application endpoint",
+      "source_zone": "Z-002",
+      "destination_zone": "Z-003",
+      "protocol": "tcp",
+      "destination_port": 8443,
+      "expected_action": "allow",
+      "expected_rule": "FW-005"
+    },
+    {
+      "id": "TC-005",
+      "description": "DMZ cannot connect directly to the database",
+      "source_zone": "Z-002",
+      "destination_zone": "Z-004",
+      "protocol": "tcp",
+      "destination_port": 5432,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    },
+    {
+      "id": "TC-006",
+      "description": "Application reaches the approved PostgreSQL database",
+      "source_zone": "Z-003",
+      "destination_zone": "Z-004",
+      "protocol": "tcp",
+      "destination_port": 5432,
+      "expected_action": "allow",
+      "expected_rule": "FW-007"
+    },
+    {
+      "id": "TC-007",
+      "description": "Application cannot use an unapproved MySQL database port",
+      "source_zone": "Z-003",
+      "destination_zone": "Z-004",
+      "protocol": "tcp",
+      "destination_port": 3306,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    },
+    {
+      "id": "TC-008",
+      "description": "Data zone cannot initiate Internet HTTPS egress",
+      "source_zone": "Z-004",
+      "destination_zone": "Z-001",
+      "protocol": "tcp",
+      "destination_port": 443,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    },
+    {
+      "id": "TC-009",
+      "description": "Management zone can administer the application zone over SSH",
+      "source_zone": "Z-005",
+      "destination_zone": "Z-003",
+      "protocol": "tcp",
+      "destination_port": 22,
+      "expected_action": "allow",
+      "expected_rule": "FW-011"
+    },
+    {
+      "id": "TC-010",
+      "description": "Unknown traffic is denied by the default rule",
+      "source_zone": "Z-003",
+      "destination_zone": "Z-002",
+      "protocol": "tcp",
+      "destination_port": 9999,
+      "expected_action": "deny",
+      "expected_rule": "FW-999"
+    }
+  ]
+}
